@@ -12,43 +12,34 @@
         android:padding="8dp"
         android:layout_weight="1"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
+    <TextView
             android:id="@+id/location_vicinity"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:hint="Los Santos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="999 km East of"
             android:padding="8dp"
             android:layout_weight="1" />
         <TextView
             android:id="@+id/location"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:hint="Los Santos"
             android:padding="8dp"
             android:layout_weight="1" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:hint="Los Santos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="January 01, 2999"
         android:padding="8dp"
         android:layout_weight="1" />
     <TextView
         android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:hint="January 01, 2999"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="99:99:99"
         android:padding="8dp"
         android:layout_weight="1"/>
-    </LinearLayout>
+
 </LinearLayout>
