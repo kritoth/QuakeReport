@@ -71,12 +71,18 @@ public class EarthquakeAdapter extends ArrayAdapter {
         return listItemView;
     }
 
+    /*
+     * returns the formatted time from the unix time as hh:mm:ss in 24 hour form
+     */
     private static String formatTime (long unixTime){
         Date time = new Date(unixTime);
         SimpleDateFormat formattedDate = new SimpleDateFormat("kk:mm:ss");
         return formattedDate.format(time);
     }
 
+    /*
+     * returns the formatted date from the unix time as yy:mm:dd
+     */
     private static String formatDate (long unixTime){
         Date date = new Date(unixTime);
         SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy:MM:dd");
