@@ -9,9 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -58,12 +56,10 @@ public final class QueryUtils {
             JSONArray features = response.getJSONArray("features");
             for(int i=0;i<features.length();i++){
 
-                String formattedDate = getFormattedDate(features.getJSONObject(i).getJSONObject("properties").getLong("time"));
-
                 earthquakes.add(new Earthquake(
                         features.getJSONObject(i).getJSONObject("properties").getString("place"),
                         features.getJSONObject(i).getJSONObject("properties").getDouble("mag"),
-                        formattedDate));
+                        features.getJSONObject(i).getJSONObject("properties").getLong("time")));
             }
 
         } catch (JSONException e) {
@@ -77,9 +73,4 @@ public final class QueryUtils {
         return earthquakes;
     }
 
-    private static String getFormattedDate(long unixTime){
-        Date date = new Date(unixTime);
-        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy:MM:dd kk:mm:ss");
-        return formattedDate.format(date);
-    }
 }
