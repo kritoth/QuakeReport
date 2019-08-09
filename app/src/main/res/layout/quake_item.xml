@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/magnitude"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:hint="99.9"
-        android:padding="8dp"
-        android:layout_weight="1"/>
+        android:padding="8dp" />
 
     <TextView
-            android:id="@+id/location_vicinity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="999 km East of"
-            android:padding="8dp"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Los Santos"
-            android:padding="8dp"
-            android:layout_weight="1" />
+        android:id="@+id/location_vicinity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="999 km East of"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Los Santos"
+        android:padding="8dp" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:hint="January 01, 2999"
-        android:padding="8dp"
-        android:layout_weight="1" />
+        android:padding="8dp" />
+
     <TextView
         android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:hint="99:99:99"
-        android:padding="8dp"
-        android:layout_weight="1"/>
+        android:padding="8dp" />
 
 </LinearLayout>
