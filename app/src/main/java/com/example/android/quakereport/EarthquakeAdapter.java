@@ -46,13 +46,13 @@ public class EarthquakeAdapter extends ArrayAdapter {
         TextView locationVicinityTextView = (TextView) listItemView.findViewById(R.id.location_vicinity);
         // Get the location name from the current EarthQukae object and
         // set this text on the name TextView
-        locationVicinityTextView.setText(currEarthquake.getLocation());
+        locationVicinityTextView.setText(formatVicinity(currEarthquake.getLocation()));
 
         // Find the TextView in the quake_item.xml layout with the ID location
         TextView locationTextView = (TextView) listItemView.findViewById(R.id.location);
         // Get the location name from the current EarthQukae object and
         // set this text on the name TextView
-        locationTextView.setText(currEarthquake.getLocation());
+        locationTextView.setText(formatLocation(currEarthquake.getLocation()));
 
         // Find the TextView in the quake_item.xml layout with the ID time
         TextView timeTextView = (TextView) listItemView.findViewById(R.id.time);
@@ -81,5 +81,33 @@ public class EarthquakeAdapter extends ArrayAdapter {
         Date date = new Date(unixTime);
         SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy:MM:dd");
         return formattedDate.format(date);
+    }
+
+    /*
+     * returns the vicinity part of the location only if it has and the "Near the" String if it hasn't
+     */
+    private static String formatVicinity(String location){
+        String vicinity = "";
+        if (location.contains("of")) {
+            vicinity = location.substring(0,location.indexOf("of") + 2);
+        }
+        else{
+            vicinity = "Near the";
+        }
+        return vicinity;
+    }
+
+    /*
+     * returns the exact location part only of the location without the vicinity
+     */
+    private static String formatLocation(String location){
+        String loc = "";
+        if (location.contains("of")) {
+            loc = location.substring(location.indexOf("of") + 3);
+        }
+        else{
+            loc = location;
+        }
+        return loc;
     }
 }
