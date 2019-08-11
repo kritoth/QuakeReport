@@ -107,15 +107,15 @@ public class EarthquakeAdapter extends ArrayAdapter {
     /*
      * returns the exact location part only of the location without the vicinity
      */
-    private static String formatLocation(String location){
-        String loc = "";
-        if (location.contains("of")) {
-            loc = location.substring(location.indexOf("of") + 3);
+    private static String formatLocation(String place){
+        String location = "";
+        if (place.contains("of")) {
+            location = place.substring(place.indexOf("of") + 3);
         }
         else{
-            loc = location;
+            location = place;
         }
-        return loc;
+        return location;
     }
 
     /*
