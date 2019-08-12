@@ -9,11 +9,13 @@ public class Earthquake {
     private String location;
     private double magnitude;
     private long timeInMillisec;
+    private String url;
 
-    public Earthquake(String location, double magnitude, long date) {
+    public Earthquake(String location, double magnitude, long date, String url) {
         this.location = location;
         this.magnitude = magnitude;
         this.timeInMillisec = date;
+        this.url = url;
     }
 
     public String getLocation() {
@@ -26,5 +28,9 @@ public class Earthquake {
 
     public long getTimeInMillisec() {
         return timeInMillisec;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

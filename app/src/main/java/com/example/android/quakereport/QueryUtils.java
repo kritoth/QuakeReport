@@ -62,7 +62,8 @@ public final class QueryUtils {
                 earthquakes.add(new Earthquake(
                         features.getJSONObject(i).getJSONObject("properties").getString("place"),
                         features.getJSONObject(i).getJSONObject("properties").getDouble("mag"),
-                        features.getJSONObject(i).getJSONObject("properties").getLong("time")));
+                        features.getJSONObject(i).getJSONObject("properties").getLong("time"),
+                        features.getJSONObject(i).getJSONObject("properties").getString("url")));
             }
 
         } catch (JSONException e) {
