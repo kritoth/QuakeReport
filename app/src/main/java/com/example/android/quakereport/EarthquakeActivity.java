@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
@@ -35,9 +37,52 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        final ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+        // Kick off an {@link AsyncTask} to perform the network request
+        QuakeAsyncTask task = new QuakeAsyncTask();
+        task.execute();
+    }
 
+    /**
+     * build the {@link Intent} for an Action to show where the @param url is point to
+     */
+    private void openEarthquakeWeb (String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * {@link AsyncTask} to perform the network request on a background thread, and then
+     * update the UI with the first earthquake in the response.
+     */
+    private class QuakeAsyncTask extends AsyncTask<URL, Void, ArrayList<Earthquake>>{
+
+        @Override
+        protected ArrayList<Earthquake> doInBackground(URL... urls) {
+            // Create a fake list of earthquake locations.
+            //TODO: Scope???
+            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+
+            return earthquakes;
+        }
+
+        /**
+         * Update the screen with the given earthquake (which was the result of the
+         * {@link QuakeAsyncTask}).
+         */
+        @Override
+        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
+            if (earthquakes == null || earthquakes.size()==0) {
+                return;
+            }
+
+            updateUi(earthquakes);
+        }
+    }
+
+    private void updateUi(ArrayList<Earthquake> earthquakes){
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
@@ -55,16 +100,5 @@ public class EarthquakeActivity extends AppCompatActivity {
                 openEarthquakeWeb(((Earthquake) adapter.getItem(position)).getUrl());
             }
         });
-    }
-
-    /*
-     * build the intent for an Action to show where the @param url is point to
-     */
-    private void openEarthquakeWeb (String url){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
     }
 }
