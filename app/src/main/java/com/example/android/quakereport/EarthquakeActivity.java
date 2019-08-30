@@ -80,7 +80,7 @@ public class EarthquakeActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Problem with Http request: ", e);
             }
-            //TODO: Scope???
+            // always prefer local over global variable
             ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
 
             return earthquakes;
