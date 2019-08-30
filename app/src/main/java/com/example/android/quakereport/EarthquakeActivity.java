@@ -29,6 +29,7 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class EarthquakeActivity extends AppCompatActivity {
 
     /** URL to query the USGS dataset for earthquake information */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-12-01&minmagnitude=7";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-12-31&minmagnitude=6";
 
 
     @Override
@@ -64,7 +65,7 @@ public class EarthquakeActivity extends AppCompatActivity {
      * {@link AsyncTask} to perform the network request on a background thread, and then
      * update the UI with the first earthquake in the response.
      */
-    private class QuakeAsyncTask extends AsyncTask<URL, Void, ArrayList<Earthquake>>{
+    private class QuakeAsyncTask extends AsyncTask<URL, Void, List<Earthquake>>{
 
         @Override
         protected ArrayList<Earthquake> doInBackground(URL... urls) {
@@ -90,7 +91,7 @@ public class EarthquakeActivity extends AppCompatActivity {
          * {@link QuakeAsyncTask}).
          */
         @Override
-        protected void onPostExecute(ArrayList<Earthquake> earthquakes) {
+        protected void onPostExecute(List<Earthquake> earthquakes) {
             if (earthquakes == null || earthquakes.size()==0) {
                 return;
             }
@@ -98,7 +99,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUi(ArrayList<Earthquake> earthquakes){
+    private void updateUi(List<Earthquake> earthquakes){
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
