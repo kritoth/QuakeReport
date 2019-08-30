@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -76,7 +77,7 @@ public class EarthquakeActivity extends AppCompatActivity {
             try {
                 jsonResponse = QueryUtils.makeHttpRequest(url);
             } catch (IOException e) {
-                // TODO Handle the IOException
+                Log.e(LOG_TAG, "Problem with Http request: ", e);
             }
             //TODO: Scope???
             ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
