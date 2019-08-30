@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     TextView emptyView;
+    ProgressBar loadingSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
         Log.i(LOG_TAG, " onLoadFinished started");
+
         if (earthquakes == null || earthquakes.size()==0) {
             return;
         }
@@ -89,9 +92,15 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // Set the emptyview if there are nothing to show
+        // Set the text of the emptyview to let it show something, if there are nothing to show
         emptyView = (TextView) findViewById(R.id.empty_view);
-        earthquakeListView.setEmptyView(emptyView);
+        if(earthquakes.isEmpty() || earthquakes == null) {
+            emptyView.setText(R.string.empty_state_message);
+        }
+
+        // Create loader spinner and set it to GONE as default
+        loadingSpinner = (ProgressBar) findViewById(R.id.loading_spinner);
+        loadingSpinner.setVisibility(View.GONE);
 
         // Create a new {@link ArrayAdapter} of earthquakes
         final EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
