@@ -36,6 +36,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
      */
     @Override
     public List<Earthquake> loadInBackground() {
+        Log.i(LOG_TAG, " loadInBackground started");
 
         // Create URL object
         URL url = QueryUtils.createUrl(USGS_REQUEST_URL);

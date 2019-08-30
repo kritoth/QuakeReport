@@ -37,25 +37,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-        
-        getLoaderManager().initLoader(1, null, this).forceLoad();
-    }
 
-    /**
-     * build the {@link Intent} for an Action to show where the @param url is point to
-     */
-    private void openEarthquakeWeb (String url){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
+        getLoaderManager().initLoader(1, null, this).forceLoad();
+        Log.i(LOG_TAG, " initloader() initialized");
     }
 
     /**
@@ -66,6 +54,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        Log.i(LOG_TAG, " onCreateLoader started");
         return new EarthquakeLoader(this);
     }
 
@@ -76,6 +65,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        Log.i(LOG_TAG, " onLoadFinished started");
         if (earthquakes == null || earthquakes.size()==0) {
             return;
         }
@@ -88,6 +78,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        Log.i(LOG_TAG, " onLoaderReset started");
         new EarthquakeAdapter(this, new ArrayList<Earthquake>());
     }
 
@@ -109,5 +100,16 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 openEarthquakeWeb(((Earthquake) adapter.getItem(position)).getUrl());
             }
         });
+    }
+
+    /**
+     * build the implicit {@link Intent} for any Action to show where the {@param url} is point to
+     */
+    private void openEarthquakeWeb (String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
