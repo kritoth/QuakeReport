@@ -15,7 +15,9 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,23 +33,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
-    /** URL to query the USGS dataset for earthquake information */
-    private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-12-31&minmagnitude=6";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-
-        // Kick off an {@link AsyncTask} to perform the network request
-        QuakeAsyncTask task = new QuakeAsyncTask();
-        task.execute();
+        
+        getLoaderManager().initLoader(1, null, this).forceLoad();
     }
 
     /**
@@ -62,41 +59,36 @@ public class EarthquakeActivity extends AppCompatActivity {
     }
 
     /**
-     * {@link AsyncTask} to perform the network request on a background thread, and then
-     * update the UI with the first earthquake in the response.
+     * Creates the {@link}EarthQuakeLoader
+     * @param id
+     * @param args
+     * @return {@link}EarthQuakeLoader
      */
-    private class QuakeAsyncTask extends AsyncTask<URL, Void, List<Earthquake>>{
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+        return new EarthquakeLoader(this);
+    }
 
-        @Override
-        protected ArrayList<Earthquake> doInBackground(URL... urls) {
-
-            // Create URL object
-            URL url = QueryUtils.createUrl(USGS_REQUEST_URL);
-
-            // Perform HTTP request to the URL and receive a JSON response back
-            String jsonResponse = "";
-            try {
-                jsonResponse = QueryUtils.makeHttpRequest(url);
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Problem with Http request: ", e);
-            }
-            // always prefer local over global variable
-            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
-
-            return earthquakes;
+    /**
+     * It is called by the {@link}loadInBackground() to update the UI with the fetched data
+     * @param loader
+     * @param earthquakes
+     */
+    @Override
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        if (earthquakes == null || earthquakes.size()==0) {
+            return;
         }
+        updateUi(earthquakes);
+    }
 
-        /**
-         * Update the screen with the given earthquake (which was the result of the
-         * {@link QuakeAsyncTask}).
-         */
-        @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
-            if (earthquakes == null || earthquakes.size()==0) {
-                return;
-            }
-            updateUi(earthquakes);
-        }
+    /**
+     * Resets the loader into a new empty {@link}EarthquakeAdapter
+     * @param loader
+     */
+    @Override
+    public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        new EarthquakeAdapter(this, new ArrayList<Earthquake>());
     }
 
     private void updateUi(List<Earthquake> earthquakes){
