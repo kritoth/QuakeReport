@@ -25,12 +25,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    /** URL to query the USGS dataset for earthquake information */
+    private static final String USGS_REQUEST_URL =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-12-01&minmagnitude=7";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +67,19 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         @Override
         protected ArrayList<Earthquake> doInBackground(URL... urls) {
-            // Create a fake list of earthquake locations.
+
+            // Create URL object
+            URL url = QueryUtils.createUrl(USGS_REQUEST_URL);
+
+            // Perform HTTP request to the URL and receive a JSON response back
+            String jsonResponse = "";
+            try {
+                jsonResponse = QueryUtils.makeHttpRequest(url);
+            } catch (IOException e) {
+                // TODO Handle the IOException
+            }
             //TODO: Scope???
-            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+            ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes(jsonResponse);
 
             return earthquakes;
         }
@@ -77,7 +93,6 @@ public class EarthquakeActivity extends AppCompatActivity {
             if (earthquakes == null || earthquakes.size()==0) {
                 return;
             }
-
             updateUi(earthquakes);
         }
     }
