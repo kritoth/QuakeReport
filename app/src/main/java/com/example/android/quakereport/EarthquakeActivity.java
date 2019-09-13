@@ -79,25 +79,35 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     }
 
     /**
-     * Creates the {@link}EarthQuakeLoader
+     * Creates the {@link}EarthQuakeLoader and sending it the query parameters as Strings
+     * The query parameters are built up partly from {@link SharedPreferences} chosen by the user
+     * and partly from some default values like format, eventtype and limit
      * @param id
      * @param args
-     * @return {@link}EarthQuakeLoader
+     * @return {@link EarthquakeLoader(android.content.Context, String)}
      */
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
         Log.i(LOG_TAG, " onCreateLoader started");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // search for the users preference for magnitude
         String minMagnitude = sharedPreferences.getString(
                 getString(R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
+        // search for the users preference for time
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder builder = baseUri.buildUpon();
+
         builder.appendQueryParameter("format", "geojson");
         builder.appendQueryParameter("eventtype", "earthquake");
-        builder.appendQueryParameter("orderby", "time");
+        builder.appendQueryParameter("orderby", orderBy);
         builder.appendQueryParameter("minmag", minMagnitude);
         builder.appendQueryParameter("limit", "10");
+
         return new EarthquakeLoader(this, builder.toString());
     }
 
