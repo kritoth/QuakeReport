@@ -18,16 +18,15 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeLoader.class.getName();
 
-    /** URL to query the USGS dataset for earthquake information */
-    private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private String mUrl;
 
     /**
      * To be called from the {@link}onCreateLoader(int id, Bundle args)
      * @param context to save the activity
      */
-    public EarthquakeLoader(Context context) {
+    public EarthquakeLoader(Context context, String url) {
         super(context);
+        this.mUrl = url;
     }
 
     /**
@@ -39,7 +38,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
         Log.i(LOG_TAG, " loadInBackground started");
 
         // Create URL object
-        URL url = QueryUtils.createUrl(USGS_REQUEST_URL);
+        URL url = QueryUtils.createUrl(mUrl);
 
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = "";

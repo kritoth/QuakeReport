@@ -18,9 +18,11 @@ package com.example.android.quakereport;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -40,6 +42,12 @@ import java.util.List;
 public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    /** URL to query the USGS dataset for earthquake information
+     * to be followed by: format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10
+     */
+    private static final String USGS_REQUEST_URL =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?";
 
     TextView emptyView;
     ProgressBar loadingSpinner;
@@ -79,7 +87,18 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
         Log.i(LOG_TAG, " onCreateLoader started");
-        return new EarthquakeLoader(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPreferences.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder builder = baseUri.buildUpon();
+        builder.appendQueryParameter("format", "geojson");
+        builder.appendQueryParameter("eventtype", "earthquake");
+        builder.appendQueryParameter("orderby", "time");
+        builder.appendQueryParameter("minmag", minMagnitude);
+        builder.appendQueryParameter("limit", "10");
+        return new EarthquakeLoader(this, builder.toString());
     }
 
     /**
