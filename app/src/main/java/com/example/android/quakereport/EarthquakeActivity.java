@@ -176,4 +176,5 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             startActivity(intent);
         }
     }
+
 }

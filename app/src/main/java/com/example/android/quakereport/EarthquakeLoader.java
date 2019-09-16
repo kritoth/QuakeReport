@@ -2,6 +2,7 @@ package com.example.android.quakereport;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.io.IOException;
@@ -21,8 +22,9 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
     private String mUrl;
 
     /**
-     * To be called from the {@link}onCreateLoader(int id, Bundle args)
+     * To be called from the {@link EarthquakeActivity#onCreateLoader(int, Bundle)}}
      * @param context to save the activity
+     * @param url the String representing the url to be used for http request
      */
     public EarthquakeLoader(Context context, String url) {
         super(context);
